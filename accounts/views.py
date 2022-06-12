@@ -5,7 +5,6 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from .serializers import CreateCustomUserSerializer
-from rest_framework_simplejwt.tokens import RefreshToken
 
 # Create your views here.
 
@@ -20,15 +19,17 @@ class CreateCustomUser(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-class TokenBlackListView(APIView):
-    permission_classes = [AllowAny]
 
-    def post(self, request):
-        try:
-            refresh_token = request.data['refresh_token']
-            token_to_be_blacklisted = RefreshToken(refresh_token)
-            token_to_be_blacklisted.blacklist()
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+# simple-jwt auth token blacklists
+# class TokenBlackListView(APIView):
+#     permission_classes = [AllowAny]
+
+#     def post(self, request):
+#         try:
+#             refresh_token = request.data['refresh_token']
+#             token_to_be_blacklisted = RefreshToken(refresh_token)
+#             token_to_be_blacklisted.blacklist()
+#         except:
+#             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 

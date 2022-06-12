@@ -7,6 +7,10 @@ from django.conf import settings
 from django.utils.text import slugify
 # Create your models here.
 
+
+def upload_to(instsance, filename):
+    return f'posts/{filename}'
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
@@ -35,8 +39,9 @@ class Post(models.Model):
     content = models.TextField(max_length=150)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=150, null=True, blank=True )
+    image = models.ImageField(upload_to=upload_to, default='posts/default.png', null=True, blank=True)
     status = models.CharField(max_length=50,choices=options, default='published')
-    published = models.DateField(default=timezone.now)
+    published = models.DateTimeField(default=timezone.now)
     objects = models.Manager()
     get_published_posts = GetPublishedPosts()
 
